@@ -170,6 +170,31 @@ int uv_uptime(double* uptime) {
   return 0;
 }
 
+
+int uv_mem_info(uv_mem_info_t* info) {
+  // unsigned mem_total;
+  // unsigned mem_free;
+  // unsigned buffers;
+  // unsigned cached;
+  // unsigned swap_total;
+  // unsigned swap_free;
+
+  info->mem_total = uv_get_total_memory();
+  info->mem_free = uv_get_free_memory();
+
+  struct xsw_usage swap;
+  size_t size = sizeof(swap);
+  int which[] = {CTL_VM, VM_SWAPUSAGE};
+
+  if (sysctl(which, 2, &swap, &size, NULL, 0) == 0) {
+    info->swap_total = swap.xsu_total;
+    info->swap_free = swap.xsu_avail;
+  }
+
+  return 0;
+}
+
+
 int uv_cpu_info(uv_cpu_info_t** cpu_infos, int* count) {
   unsigned int ticks = (unsigned int)sysconf(_SC_CLK_TCK),
                multiplier = ((uint64_t)1000L / ticks);

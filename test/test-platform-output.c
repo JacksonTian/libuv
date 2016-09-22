@@ -31,6 +31,7 @@ TEST_IMPL(platform_output) {
   double uptime;
   uv_rusage_t rusage;
   uv_cpu_info_t* cpus;
+  uv_mem_info_t mem;
   uv_interface_address_t* interfaces;
   uv_passwd_t pwd;
   int count;
@@ -92,6 +93,20 @@ TEST_IMPL(platform_output) {
 
   err = uv_interface_addresses(&interfaces, &count);
   ASSERT(err == 0);
+
+  printf("uv_mem_info:\n");
+
+  uv_mem_info(&mem);
+  // unsigned mem_total;
+  // unsigned mem_free;
+  // unsigned buffers;
+  // unsigned cached;
+  // unsigned swap_total;
+  // unsigned swap_free;
+  printf("  memory total: %llu\n", (unsigned long long) mem.mem_total);
+  printf("  memory free: %llu\n", (unsigned long long) mem.mem_free);
+  printf("  swap total: %llu\n", (unsigned long long) mem.swap_total);
+  printf("  swap free: %llu\n", (unsigned long long) mem.swap_free);
 
   printf("uv_interface_addresses:\n");
   for (i = 0; i < count; i++) {
