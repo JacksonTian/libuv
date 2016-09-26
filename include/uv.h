@@ -224,6 +224,7 @@ typedef struct uv_work_s uv_work_t;
 /* None of the above. */
 typedef struct uv_cpu_info_s uv_cpu_info_t;
 typedef struct uv_interface_address_s uv_interface_address_t;
+typedef struct uv_mem_info_s uv_mem_info_t;
 typedef struct uv_dirent_s uv_dirent_t;
 typedef struct uv_passwd_s uv_passwd_t;
 
@@ -997,6 +998,15 @@ struct uv_interface_address_s {
   } netmask;
 };
 
+struct uv_mem_info_s {
+  uint64_t mem_total;
+  uint64_t mem_free;
+  uint64_t buffers;
+  uint64_t cached;
+  uint64_t swap_total;
+  uint64_t swap_free;
+};
+
 struct uv_passwd_s {
   char* username;
   long uid;
@@ -1380,6 +1390,8 @@ UV_EXTERN int uv_chdir(const char* dir);
 
 UV_EXTERN uint64_t uv_get_free_memory(void);
 UV_EXTERN uint64_t uv_get_total_memory(void);
+
+UV_EXTERN int uv_mem_info(uv_mem_info_t* meminfo);
 
 UV_EXTERN uint64_t uv_hrtime(void);
 
